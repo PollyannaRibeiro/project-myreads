@@ -29,7 +29,7 @@ class ListBooks extends Component {
             this.searchingBook(query)
         }, 500) 
     }
-   
+    // searchingBook checks if an array will return from the BookAPI, if not, it will show an error screen "not found"
     searchingBook(query){
         BooksAPI.search(this.state.query).then((result) => {
             if (Array.isArray(result)){
@@ -44,22 +44,22 @@ class ListBooks extends Component {
                 } else {
                     this.state.error = false;
                 }
-                
                 this.setState(this.state)
             }                
         })
     }
 
+    // compares if the searched books already exist in app page and get the current shelf
     checkBooksInApp(elem){
-        console.log(elem.id)
         let filtering = this.props.books.filter((book)=> book.id === elem.id)
         if(filtering.length>0 ){
             elem.shelf = filtering[0].shelf
         }
     }
 
+    // when choosing a select option in the search screen it updates books in the app page 
+    //(push the new book to the app array book) and compares if the shelves are identical in both pages
     updateBook(shelf, book) {
-
         let filteringElem = this.props.books.filter((bookApp)=> bookApp.id = book.id)
         if(filteringElem.length>0){
             book.shelf = filteringElem[0].shelf;
@@ -86,7 +86,8 @@ class ListBooks extends Component {
                         onChange={(event) => this.updateQuery(event.target.value)}/>
                     </div>
                 </div>  
-
+                
+                {/* error screen */}
                 {this.state.error === true && 
                     <div className='error-warning'>No Results found</div>
                 }
