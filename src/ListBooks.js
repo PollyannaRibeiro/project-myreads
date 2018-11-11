@@ -11,12 +11,14 @@ import * as BooksAPI from './BooksAPI'
 class ListBooks extends Component {
 
     static propTypes = {
-         books: PropTypes.array.isRequired
+         books: PropTypes.array.isRequired,
+         onMove: PropTypes.func.isRequired
     }
 
     state = {
         query: '',
-        searchBooks:[]
+        searchBooks:[],
+        error: false
     }
     
     time;
@@ -25,34 +27,27 @@ class ListBooks extends Component {
         this.setState({query: query.trim(), searchBooks:[]})
         clearInterval(this.time)
         this.searchingBook(query)
-        
-
     }
-
-    
+   
     searchingBook(query){
         this.time = setTimeout(()=>{
             BooksAPI.search(this.state.query).then((result) => {
-                this.state.searchBooks = result
-                this.setState(this.state)
-            });
+                if (Array.isArray(result)){
+                    this.state.error = false
+                    this.state.searchBooks = result
+                    this.setState(this.state)
+                    console.log(result)
+                }
+                else{
+                    this.state.error = true;
+                    this.setState(this.state)
+                }                
+            })
         }, 500) 
     }
 
-    // keyPress(event){
-    //     if(event.keyCode == 13){
-    //         searchingBook(this.state.query)
-    //     }
-    // }
- 
     render(){
-        // let showingBooks
-        // if(this.state.query){
-        //     const match = new RegExp(escapeRegExp(this.state.query), 'i')
-        //     showingBooks = this.state.searchBooks.filter((book) => match.test(book.title))
-        // } else {
-        //     showingBooks = this.state.searchBooks
-        // }
+    
         let showingBooks = this.state.searchBooks
 
         return(
@@ -67,15 +62,22 @@ class ListBooks extends Component {
                         onChange={(event) => this.updateQuery(event.target.value)}/>
                     </div>
                 </div>  
+
+                {this.updateQuery.error = true && 
+                    <div className='error-warning'>No Results found</div>
+                }
+                
                 <div className="search-books-results">
                     <ol className='books-grid'>
                         {showingBooks.map((book)=>(
                             <li key={book.id}>
                                 <div className="book">
                                     <div className="book-top">
-                                    <div className="book-cover" style={{ width: 128, height: 174, backgroundImage:`url(${book.imageLinks.smallThumbnail})`}}></div>
+                                    <div className="book-cover" 
+                                        style={{ width: 128, height: 174, 
+                                        backgroundImage:`url(${(book.imageLinks.smallThumbnail ? book.imageLinks.smallThumbnail : '')})`}}></div>
                                     <div className="book-shelf-changer">
-                                        <select>
+                                        <select value= {(this.props.books.shelf ? this.props.books.shelf : 'none')} onChange={e=>this.props.onMove(e.target.value, book)}>
                                         <option value="move" disabled>Move to...</option>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
