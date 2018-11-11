@@ -172,3 +172,12 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+/* error warning */
+
+.error-warning{
+  font-size: 2em;
+  margin-top: 3em;
+  text-align: center;
+  color: gray;
+}
