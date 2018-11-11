@@ -20,8 +20,8 @@ class ListBooks extends Component {
         error: false
     }
     
+    // wait for a half second until having no keystroke press to search
     time;
-    
     updateQuery = (query) =>{
         this.setState({query: query.trim(), searchBooks:[]})
         clearInterval(this.time)
@@ -29,6 +29,7 @@ class ListBooks extends Component {
             this.searchingBook(query)
         }, 500) 
     }
+    
     // searchingBook checks if an array will return from the BookAPI, if not, it will show an error screen "not found"
     searchingBook(query){
         BooksAPI.search(this.state.query).then((result) => {
@@ -86,7 +87,7 @@ class ListBooks extends Component {
                         onChange={(event) => this.updateQuery(event.target.value)}/>
                     </div>
                 </div>  
-                
+
                 {/* error screen */}
                 {this.state.error === true && 
                     <div className='error-warning'>No Results found</div>
