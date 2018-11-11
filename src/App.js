@@ -28,32 +28,32 @@ class App extends Component {
     books: [ ]
   }
 
-  //nome App.componentDidMount
-  //retorno void
-  //arguments void
   componentDidMount(){
     BooksAPI.getAll().then((books)=>{
       this.setState({books: books})
     });
   }
   
-  // App.moveBook(shelf: string, book: obj): void
   moveBook(shelf, book){
     book.shelf = shelf;
     BooksAPI.update(book, shelf)
     this.setState(this.state)
+  }
+
 
   render() {
-   
+    
     return (
       <div className="app">
         <Route exact path = '/search' render={({history}) =>(
           <div className="search-books">
               <ListBooks 
                 books={this.state.books}
+                onMove={(shelf, book) => this.moveBook(shelf, book)}
               />   
           </div>          
         )}/>
+        
         <Route exact path = '/' render = {() => (
           <div className="list-books">
             <div className="list-books-title">

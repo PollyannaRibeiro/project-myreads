@@ -7,7 +7,6 @@ import * as BooksApp from './App'
 import * as BooksAPI from './BooksAPI'
 
 
-
 class ListBooks extends Component {
 
     static propTypes = {
@@ -26,30 +25,55 @@ class ListBooks extends Component {
     updateQuery = (query) =>{
         this.setState({query: query.trim(), searchBooks:[]})
         clearInterval(this.time)
-        this.searchingBook(query)
+        this.time = setTimeout(()=>{
+            this.searchingBook(query)
+        }, 500) 
     }
    
     searchingBook(query){
-        this.time = setTimeout(()=>{
-            BooksAPI.search(this.state.query).then((result) => {
-                if (Array.isArray(result)){
-                    this.state.error = false
-                    this.state.searchBooks = result
-                    this.setState(this.state)
-                    console.log(result)
-                }
-                else{
+        BooksAPI.search(this.state.query).then((result) => {
+            if (Array.isArray(result)){
+                result.forEach((book)=>this.checkBooksInApp(book))
+                this.state.error = false
+                this.state.searchBooks = result
+                this.setState(this.state)
+                console.log(result)
+            } else {
+                if(this.state.query.length > 0){
                     this.state.error = true;
-                    this.setState(this.state)
-                }                
-            })
-        }, 500) 
+                } else {
+                    this.state.error = false;
+                }
+                
+                this.setState(this.state)
+            }                
+        })
+    }
+
+    checkBooksInApp(elem){
+        console.log(elem.id)
+        let filtering = this.props.books.filter((book)=> book.id === elem.id)
+        if(filtering.length>0 ){
+            elem.shelf = filtering[0].shelf
+        }
+    }
+
+    updateBook(shelf, book) {
+
+        let filteringElem = this.props.books.filter((bookApp)=> bookApp.id = book.id)
+        if(filteringElem.length>0){
+            book.shelf = filteringElem[0].shelf;
+        }
+        if(book.shelf!== 'none'){
+            this.props.books.push(book)
+        }
+        this.props.onMove(shelf, book)
     }
 
     render(){
     
         let showingBooks = this.state.searchBooks
-
+        
         return(
             <div>
                 <div className='search-books-bar'>
@@ -63,7 +87,7 @@ class ListBooks extends Component {
                     </div>
                 </div>  
 
-                {this.updateQuery.error = true && 
+                {this.state.error === true && 
                     <div className='error-warning'>No Results found</div>
                 }
                 
@@ -77,7 +101,7 @@ class ListBooks extends Component {
                                         style={{ width: 128, height: 174, 
                                         backgroundImage:`url(${(book.imageLinks.smallThumbnail ? book.imageLinks.smallThumbnail : '')})`}}></div>
                                     <div className="book-shelf-changer">
-                                        <select value= {(this.props.books.shelf ? this.props.books.shelf : 'none')} onChange={e=>this.props.onMove(e.target.value, book)}>
+                                        <select value= {(book.shelf ? book.shelf : 'none')} onChange={e=>this.updateBook(e.target.value, book)}>
                                         <option value="move" disabled>Move to...</option>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
@@ -96,7 +120,6 @@ class ListBooks extends Component {
                 </div>   
             </div>       
         )
-        
     }
 }
 
