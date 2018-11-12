@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
-import * as BooksApp from './App'
 import * as BooksAPI from './BooksAPI'
-
 
 class ListBooks extends Component {
 
@@ -29,7 +25,7 @@ class ListBooks extends Component {
             this.searchingBook(query)
         }, 500) 
     }
-    
+
     // searchingBook checks if an array will return from the BookAPI, if not, it will show an error screen "not found"
     searchingBook(query){
         BooksAPI.search(this.state.query).then((result) => {
