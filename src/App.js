@@ -40,6 +40,15 @@ class App extends Component {
     this.setState(this.state)
   }
 
+  // Array<T>.filter(func: (T)=> Bool ): Array<T>
+
+  // Array<T>.map(func: (T)=>K ): Array<K>
+
+  // Array<T>.push(k): number
+
+  // Array<T>.forEach(func:(T) => void): void
+
+  // (method) Array<any>.map<JSX.Element>(callbackfn: (value: any, index: number, array: any[]) => JSX.Element, thisArg?: any): JSX.Element[]
 
   render() {
     
