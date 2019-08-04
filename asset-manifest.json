@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/project-myreads/static/css/main.0aa8db2f.chunk.css",
+    "main.js": "/project-myreads/static/js/main.fe8205d9.chunk.js",
+    "main.js.map": "/project-myreads/static/js/main.fe8205d9.chunk.js.map",
+    "runtime~main.js": "/project-myreads/static/js/runtime~main.25093bc3.js",
+    "runtime~main.js.map": "/project-myreads/static/js/runtime~main.25093bc3.js.map",
+    "static/js/2.9cfcf9e3.chunk.js": "/project-myreads/static/js/2.9cfcf9e3.chunk.js",
+    "static/js/2.9cfcf9e3.chunk.js.map": "/project-myreads/static/js/2.9cfcf9e3.chunk.js.map",
+    "index.html": "/project-myreads/index.html",
+    "precache-manifest.d41103cba5b78488aefeba168a4ea0b1.js": "/project-myreads/precache-manifest.d41103cba5b78488aefeba168a4ea0b1.js",
+    "service-worker.js": "/project-myreads/service-worker.js",
+    "static/css/main.0aa8db2f.chunk.css.map": "/project-myreads/static/css/main.0aa8db2f.chunk.css.map",
+    "static/media/App.css": "/project-myreads/static/media/arrow-drop-down.78c6f53b.svg"
+  }
+}
